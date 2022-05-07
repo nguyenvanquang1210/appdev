@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<FptBook.Models.Book>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find book: <input style="width : 50%" type="text" placeholder="enter book name or category" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input style=" border:2px solid #dadada" type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+<div class="row pb-3 backgroundWhite">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-md-6">
+            <div class="row p-2">
+                <div class="col-12  p-1" style="border:1px solid #008cba; border-radius: 5px;">
+                    <div class="card" style="border:0px;">
+                        <img src="@product.ImgUrl" class="card-img-top rounded" />
+                        <div class="pl-1">
+                            <p class="card-title h5">
+                                <b style="color:#2c3e50">@product.Title</b>
+                            </p>
+                            <p class="card-title text-primary">by <b>@product.Author</b></p>
+                        </div>
+                        <div style="padding-left:5px;">
+                            <p>Category: @product.Category</p>
+                        </div>
+                        <div style="padding-left:5px;">
+                            <p style="color:maroon">Price: <b class="">$ @product.Price</b></p>
+                        </div>
+                    </div>
+                    <div>
+                         <a asp-action="AddToCart" asp-route-Isbn="@product.Isbn" class="btn btn-primary">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@*<div class="container">
+    <div class="row">
+        @for (var i = 0; i < @Model.Count; i++)
+        {
+                <div class="col-md-4 col-6">
+                    <div class="card" style="width: 18rem;">
+                        <img src="/@Model[i].ImgUrl" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@Model[i].Title</h5>
+                            <a href="" class="btn btn-primary">Detail</a>
+                            <a asp-action="AddToCart" asp-route-isbn="@Model[i].Isbn" class="btn btn-primary">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+</div>*@
+
+<p>
+    @ViewBag.message
+</p>
+<div style="display:flex;text-align:center;justify-content:center">
+      <nav aria-label="Page navigation example">
+          <ul class="pagination">
+              @for (var i = 0; i < @ViewBag.numberOfPages; i++)
+              {
+                  var style = (ViewBag.currentPage == @i) ? "active" : "";
+                  <li class="page-item @style">
+                      <a class="page-link" asp-route-id="@i">@(i+1)</a>
+                  </li>
+              }
+          </ul>
+      </nav>
+  </div>
+
